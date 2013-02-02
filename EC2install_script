@@ -1,0 +1,43 @@
+i#!/usr/bin/perl
+# system("/usr/bin/java", "-version", ">/dev/null 2>&1");
+$JAVA_CHECK = "/usr/bin/java -version >/dev/null 2>&1";
+$GIT_CHECK = "/usr/bin/git --version >/dev/null 2>&1";
+$MAVEN_CHECK = "/usr/bin/mvn --version >/dev/null 2>&1";
+$JAVA_INSTALL = "sudo /usr/bin/yum install -q -y java"; 
+$GIT_INSTALL = "sudo /usr/bin/yum install -q -y git"; 
+$MAVEN_INSTALL = "/usr/bin/wget -q http://apache.mirrors.pair.com/maven/maven-3/3.0.4/binaries/apache-maven-3.0.4-bin.tar.gz -P /tmp/ && /bin/tar -C /tmp/ -xf /tmp/apache-maven* 2>&1 && sudo /bin/mv /tmp/apache-maven-3.0.4 /usr/local/ && /bin/rm -rf /tmp/*maven* 2>&1";
+#$ENV{'M2_HOME'} = "/usr/local/apache-maven-3.0.4";
+#$ENV{'M2'} = "$M2_HOME/bin";
+#$ENV{'PATH'} = "$M2:$PATH";
+#@MAVEN_ENV = ("export M2_HOME=/usr/local/apache-maven-3.0.4", "export M2=$M2_HOME/bin" . "export PATH=$M2:$PATH");
+
+# system("/usr/bin/java -version >/dev/null 2>&1");
+ system($JAVA_CHECK);
+if ( $? == 0 )
+{
+  print "java already installed \n";
+}
+else {
+    printf "installing java \n ";
+system ($JAVA_INSTALL);
+}
+ system("$GIT_CHECK");
+if ( $? == 0 )
+{
+  print "git installed \n";
+}
+else {
+    printf "git not exit, installing GIT\n ";
+system ($GIT_INSTALL);
+}
+ system("$MAVEN_CHECK");
+if ( $? == 0 )
+{
+  print "mvn installed \n";
+}
+else {
+    printf "mvn not exist, installing MVN \n ";
+system($MAVEN_INSTALL);
+$ENV{PATH} = "$ENV{PATH}:/usr/local/apache-maven-3.0.4/bin";
+}
+
